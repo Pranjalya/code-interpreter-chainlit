@@ -1,12 +1,12 @@
-
 import io
 import contextlib
 import traceback
 import os
 
+
 class CodeExecutor:
     def __init__(self):
-        self.namespace = {}
+        pass
 
     def execute_code(self, code):
         """Executes the given Python code and returns the output."""
