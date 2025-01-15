@@ -1,3 +1,5 @@
 openai
 chainlit
 python-dotenv
+huggingface-hub
+pandas

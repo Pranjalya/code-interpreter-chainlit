@@ -8,15 +8,16 @@ import os
 chat_agent = ChatAgent()
 code_executor = CodeExecutor()
 
-
 @cl.on_chat_start
 async def start_chat():
-   cl.user_session.set('file_paths', [])
+    cl.user_session.set('file_paths', [])
 
 @cl.on_message
 async def main(message: cl.Message):
     files = []
-    
+    uploaded_files = list(filter(lambda x: type(x) is cl.File, message.elements))
+    if uploaded_files:
+        await handle_upload(uploaded_files)
     if cl.user_session.get('file_paths'):
         files = cl.user_session.get('file_paths')
 
@@ -37,7 +38,6 @@ async def main(message: cl.Message):
 async def handle_upload(files):
     file_paths = []
     for file in files:
-        file_path = save_uploaded_file(file)
-        file_paths.append(file_path)
+        file_paths.append(file.path)
     cl.user_session.set('file_paths', file_paths)
     await cl.Message(content=f"Uploaded {len(files)} file(s).").send()

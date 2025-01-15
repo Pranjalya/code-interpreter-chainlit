@@ -2,14 +2,19 @@
 import os
 from dotenv import load_dotenv
 
-def load_env_variables():
-    load_dotenv()
-    openai_api_key = os.getenv("OPENAI_API_KEY")
-    if not openai_api_key:
-        raise ValueError("OPENAI_API_KEY not found in environment variables.")
-    return openai_api_key
+api_keys = {
+    "openai": "OPENAI_API_KEY",
+    "huggingface": "HF_API_KEY"
+}
 
-def save_uploaded_file(file, directory='/app/input_files'):
+def load_env_variables(tool="openai"):
+    load_dotenv()
+    api_key = os.getenv(api_keys[tool])
+    if not api_key:
+        raise ValueError(f"{api_keys[tool]} not found in environment variables.")
+    return api_key
+
+def save_uploaded_file(file, directory='./input_files'):
     """Save an uploaded file to a specific directory."""
     if not os.path.exists(directory):
         os.makedirs(directory)
