@@ -19,6 +19,7 @@ class ChatAgent:
         self.chat_history = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     def select_model(self, llm_agent):
+        """Model can be switched at any time, persisting the chat history for a session"""
         self.api_key = load_env_variables(llm_agent)
         if llm_agent == "huggingface":
             self.client = InferenceClient(api_key=self.api_key)
@@ -44,6 +45,7 @@ class ChatAgent:
                     prompt.append(
                         f"User uploaded file: {file}, but there was error in reading the file: {e}"
                     )
+        # To keep the code sample output clean
         prompt.append(
             f"NOTE: While generating the code, do not try to execute it and do not return the output on the sample data."
         )
